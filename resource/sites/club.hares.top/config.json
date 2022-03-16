@@ -4,23 +4,132 @@
    "description":"2160p/4k 及以上的高清资源站点",
    "url":"https://club.hares.top/",
    "icon":"https://club.hares.top/favicon.ico",
-  "tags": ["影视", "纪录片","综合"],
+  "tags": [
+      "影视",
+      "纪录片",
+      "综合"
+  ],
    "schema":"NexusPHP",
    "host":"club.hares.top",
-   "collaborator":"kevgao, bright",
+  "collaborator": [
+      "kevgao",
+      "枕头啊枕头",
+	  "bright"
+  ],
   "formerHosts": [],
    "searchEntryConfig":{
-      "fieldSelector":{
-         "subTitle":{
-            "selector":["p.layui-torrents-descr-width"],
-            "filters":["query.text()"]
-         }
+      "fieldSelector": {
+          "subTitle": {
+              "selector": [
+                  "p.layui-elip.layui-torrents-descr-width:first"
+              ],
+              "filters": [
+                  "query.text()"
+              ]
+          },  
+          "progress": {
+              "selector": [
+                  "div[title^='leeching'], div[title^='seeding'], div[title^='inactivity']"
+              ],
+              "filters": [
+                  "query ? query.attr('title').replace('leeching','').replace('seeding','').replace('inactivity','').replace('%','').trim() : null"
+              ]
+          },
+          "status": {
+              "selector": [
+                  "div[title^='leeching']",
+                  "div[title^='seeding']",
+                  "div[title^='inactivity']"
+              ],
+              "switchFilters": [
+                  [
+                      "1"
+                  ],
+                  [
+                      "2"
+                  ],
+                  [
+                      "query.attr('title').indexOf('100%')!=-1 ? 255:3"
+                  ]
+              ]
+          }
       }
    },
+  "searchEntry": [
+      {
+          "name": "全部",
+          "enabled": true
+      },
+      {
+          "queryString": "/torrents.php?search_area=0&search=$key$&search_mode=0&cat401=1&incldead=1&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "电影",
+          "enabled": false
+      },
+      {
+          "queryString": "/torrents.php?search_area=0&search=$key$&search_mode=0&cat402=1&incldead=1&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "电视剧",
+          "enabled": false
+      },
+      {
+          "queryString": "/torrents.php?search_area=0&search=$key$&search_mode=0&cat403=1&incldead=1&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "综艺",
+          "enabled": false
+      },
+      {
+          "queryString": "/torrents.php?search_area=0&search=$key$&search_mode=0&cat406=1&incldead=1&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "M V",
+          "enabled": false
+      },
+      {
+          "queryString": "/torrents.php?search_area=0&search=$key$&search_mode=0&cat409=1&incldead=1&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "演唱会",
+          "enabled": false
+      },
+      {
+          "queryString": "/torrents.php?search_area=0&search=$key$&search_mode=0&cat404=1&incldead=1&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "纪录片",
+          "enabled": false
+      },
+      {
+          "queryString": "/torrents.php?search_area=0&search=$key$&search_mode=0&cat405=1&incldead=1&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "动漫",
+          "enabled": false
+      },
+      {
+          "queryString": "/torrents.php?search_area=0&search=$key$&search_mode=0&cat407=1&incldead=1&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "体育",
+          "enabled": false
+      },
+      {
+          "queryString": "/official.php?search_area=0&search=$key$&search_mode=0&team1=1&team2=1&team3=1&incldead=0&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "官组(全部)",
+          "enabled": false
+      },
+      {
+          "queryString": "/official.php?search_area=0&search=$key$&search_mode=0&medium1=1&medium2=1&team1=1&team2=1&team3=1&incldead=0&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "官组(原盘|DIY)",
+          "enabled": false
+      },
+      {
+          "queryString": "/official.php?search_area=0&search=$key$&search_mode=0&medium3=1&team1=1&team2=1&team3=1&incldead=0&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "官组(Remux)",
+          "enabled": false
+      },
+      {
+          "queryString": "/official.php?search_area=0&search=$key$&search_mode=0&medium3=1&team1=1&team2=1&team3=1&incldead=0&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "官组(Remux)",
+          "enabled": false
+      },
+      {
+          "queryString": "/official.php?search_area=0&search=$key$&search_mode=0&medium5=1&team1=1&team2=1&team3=1&incldead=0&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "官组(WEB-DL)",
+          "enabled": false
+      }
+  ],
    "selectors":{
       "userExtendInfo":{
-         "merge":true,
-         "fields":{
+          "merge":true,
+          "fields": { 
             "uploaded": {
                "selector": ["td:contains('上传量') + td"],
                "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
@@ -33,15 +142,15 @@
                "selector": ["td:contains('等级') + td"],
                "filters": ["query.find('b').text()"]
             },
-            "bonus":{
+              "bonus": {
                "selector": ["td:contains('奶糖') + td"],
                "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
             },
             "joinTime": {
                 "selector": ["td:contains('加入日期') + td"],
                 "filters": ["query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
-            }
-         }
+              }
+          }
       },
       "userSeedingTorrents": {
          "prerequisites": "!user.seeding",
@@ -52,16 +161,26 @@
              "filters": ["query.text()"]
            },
            "seedingSize": {
-             "selector": ["tr:not(:eq(0))"],
-             "filters": ["jQuery.map(query.find('td:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
-           }
+             "selector": "",
+             "filters": [ "query.text().match(/总大小：(.*?)类型/g)",
+                     "(query && query.length>0 ) ? query[0].replace('总大小：', '').replace('类型', '').trim() : 0",
+                     "(query != 0) ? query.sizeToNumber() : 0"
+                 ]
+             }
          }
-      }
+     }
    },
-  "plugins": [{
+  "plugins": [
+      {
     "name": "官方列表",
-    "pages": ["/official.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
-  }],
+          "pages": [
+              "/official.php"
+          ],
+          "scripts": [
+              "/schemas/NexusPHP/common.js",
+              "/schemas/NexusPHP/torrents.js"
+          ]
+      }
+  ],
    "mergeSchemaTagSelectors":true
 }
