@@ -43,8 +43,6 @@
                       persistent-hint
                       item-text="name"
                       item-value="id"
-                      required
-                      :rules="rules.require"
                       autofocus
                       ref="defaultClient"
                     >
