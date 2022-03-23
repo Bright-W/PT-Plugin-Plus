@@ -14,7 +14,7 @@
   "collaborator": [
       "kevgao",
       "枕头啊枕头",
-	  "bright"
+      "bright"
   ],
   "formerHosts": [],
    "searchEntryConfig":{
@@ -126,7 +126,16 @@
           "enabled": false
       }
   ],
-   "selectors":{
+  "selectors": {  
+    "userBaseInfo": {
+      "merge":true,
+      "fields": {
+        "messageCount": {
+          "selector": [".unread"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        }
+      }
+    },
       "userExtendInfo":{
           "merge":true,
           "fields": { 
