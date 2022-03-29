@@ -54,7 +54,7 @@
       "page": "/",
       "fields": {
         "messageCount": {
-          "selector": ["a[title=Notifications] span.message-count.badge"],
+          "selector": ["a[title=Notifications] span.badge"],
           "filters": ["query.text()"]
         },
         "name": {
