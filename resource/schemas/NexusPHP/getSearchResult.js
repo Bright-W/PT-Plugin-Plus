@@ -82,7 +82,7 @@
         let text = cell.text();
 
         // 评论数
-        if (cell.find("img.comments").length || cell.find("[title='评论数']").length) {
+        if (cell.find(".comments").length) {
           fieldIndex.comments = index;
           fieldIndex.author =
             index == fieldIndex.author ? -1 : fieldIndex.author;
@@ -90,7 +90,7 @@
         }
 
         // 发布时间
-        if (cell.find("img.time").length || cell.find("[title='存活时间']").length) {
+        if (cell.find("img.time,div.date").length) {
           fieldIndex.time = index;
           fieldIndex.author =
             index == fieldIndex.author ? -1 : fieldIndex.author;
@@ -98,7 +98,7 @@
         }
 
         // 大小
-        if (cell.find("img.size").length || cell.find("[title='大小']").length) {
+        if (cell.find("img.size,div[alt='size']").length) {
           fieldIndex.size = index;
           fieldIndex.author =
             index == fieldIndex.author ? -1 : fieldIndex.author;
@@ -106,7 +106,7 @@
         }
 
         // 种子数
-        if (cell.find("img.seeders").length || cell.find("[title='种子数']").length) {
+        if (cell.find("img.seeders,div[alt='seeders']").length) {
           fieldIndex.seeders = index;
           fieldIndex.author =
             index == fieldIndex.author ? -1 : fieldIndex.author;
@@ -114,7 +114,7 @@
         }
 
         // 下载数
-        if (cell.find("img.leechers").length || cell.find("[title='下载数']").length) {
+        if (cell.find("img.leechers,div[alt='leechers']").length) {
           fieldIndex.leechers = index;
           fieldIndex.author =
             index == fieldIndex.author ? -1 : fieldIndex.author;
@@ -122,7 +122,7 @@
         }
 
         // 完成数
-        if (cell.find("img.snatched").length || cell.find("[title='完成数']").length) {
+        if (cell.find("img.snatched,div[alt='snatched']").length) {
           fieldIndex.completed = index;
           fieldIndex.author =
             index == fieldIndex.author ? -1 : fieldIndex.author;
@@ -152,7 +152,7 @@
 
           let cells = row.find(">td");
 
-          let title = this.getTitle(row);
+          let title = this.getTitle(row,cells,fieldIndex);
 
           // 没有获取标题时，继续下一个
           if (title.length == 0) {
@@ -307,10 +307,10 @@
     /**
      * 获取标题
      */
-    getTitle(row) {
+    getTitle(row, cells, fieldIndex) {
       let title =
-        Searcher.getFieldValue(this.site, row, "title") ||
-        row.find("a[href*='hit'][title]").first();
+        this.getFieldValue(row, cells, fieldIndex, "title", true) ||
+        row.find("a[href*='hit'][title]:not(a[href*='comment'])").first();
 
       if (typeof title === "string") {
         return title;
