@@ -89,11 +89,26 @@
                     <v-icon color="info">add</v-icon>
                   </v-btn>
 
+                  <v-btn
+                    icon
+                    v-if="
+                      verifiedItems[0].verified &&
+                      !item.loading &&
+                      !item.torrent &&
+                      index > 0
+                    "
+                    :title="$t('keepUploadTask.redownload')"
+                    @click.stop="reDownload(index)"
+                    class="mr-1"
+                  >
+                    <v-icon color="green">sync</v-icon>
+                  </v-btn>
+
                   <v-btn icon :loading="item.loading" :title="item.status">
                     <v-icon color="success" v-if="item.verified"
                       >done_all</v-icon
                     >
-                    <v-icon color="error" v-on:click.prevent="deleteVerifiedItem(index)" v-else>clear</v-icon>
+                    <v-icon color="error" :title="$t('keepUploadTask.removeFromKeepUpload')" @click.stop="deleteVerifiedItem(index)" v-else>clear</v-icon>
                   </v-btn>
                 </div>
               </v-list-tile-action>
@@ -295,6 +310,9 @@ export default Vue.extend({
             this.dialog = false;
           }, 3000);
           console.log("createKeepUploadTask", result);
+
+           // 生成辅种任务后清除选择
+           this.$root.$emit('KeepUploadTaskCreateSuccess');
         })
         .catch(() => {
           this.creating = false;
@@ -309,24 +327,37 @@ export default Vue.extend({
       this.clearMessage();
 
       this.items.forEach((item: SearchResultItem, index: number) => {
-        if (item.url) {
-          this.verifiedItems.push({
-            data: item,
-            torrent: null,
-            loading: true,
-            verified: false,
-            status: this.$t("keepUploadTask.status.downloading").toString()
+      if (item.url) {
+        this.verifiedItems.push({
+          data: item,
+          torrent: null,
+          loading: true,
+          verified: false,
+          status: this.$t("keepUploadTask.status.downloading").toString()
+        });
+        // requests.push(this.getTorrent(item.url, index));
+        this.getTorrent(item.url, index)
+          .then((result: any) => {
+            this.verification(result, index);
+          })
+          .catch(() => {
+            this.verification(null, index);
           });
-          // requests.push(this.getTorrent(item.url, index));
-          this.getTorrent(item.url, index)
-            .then((result: any) => {
-              this.verification(result, index);
-            })
-            .catch(() => {
-              this.verification(null, index);
-            });
         }
       });
+    },
+    reDownload(index: number)
+    {
+      this.verifiedItems[index].loading = true;
+      this.verifiedItems[index].status = this.$t("keepUploadTask.status.downloading").toString();
+
+      this.getTorrent(this.verifiedItems[index].data.url, index)
+        .then((result: any) => {
+          this.verification(result, index);
+        })
+        .catch(() => {
+          this.verification(null, index);
+        });
     },
     /**
      * 验证

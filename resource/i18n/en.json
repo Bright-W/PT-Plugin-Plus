@@ -168,6 +168,7 @@
       "userLevel": "User level",
       "levelRequirements": "Level requirements",
       "seedingPoints": "Seeding Points",
+      "showHnR": "H&R",
       "selectColumns": "Select Columns",
       "week": "Expressed in weeks",
       "timeline": "Time line",
@@ -198,7 +199,9 @@
         "comments": "Comments",
         "uploads": "Uploaded",
         "trueDownloaded": "True Downloaded",
-        "classPoints": "Class Points"
+        "classPoints": "Class Points",
+        "unsatisfieds": "Unsatisfieds",
+        "prewarn": "H&R Prewarn"
       },
       "levelRequirement": {
         "levelRequirements": "Level Requirements",
@@ -217,6 +220,8 @@
         "lastUpdateTime": "Update at",
         "status": "Status",
         "comments": "Comments",
+        "uploaded": "Uploaded",
+        "downloaded":"Downloaded",
         "uploads": "Uploaded",
         "trueDownloaded": "True Downloaded",
         "classPoints": "Class Points"
@@ -997,6 +1002,8 @@
       "fileCount": "Files: ",
       "sendConfirm": "Are you sure you want to send these {count} torrents?",
       "addToKeepUpload": "Add to task list",
+      "removeFromKeepUpload": "Remove from task list",
+      "redownload" : "Re-download",
       "addToKeepUploadConfirm": "Are you sure want add this torrent to task list?",
       "status": {
         "label": "Status: ",
