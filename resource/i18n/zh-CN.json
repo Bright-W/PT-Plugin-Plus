@@ -219,7 +219,8 @@
         "downloaded":"下载量",
         "uploads": "发布",
         "trueDownloaded": "真实下载",
-        "classPoints": "等级积分"
+        "classPoints": "等级积分",
+        "alternative": "择一"
       },
       "tip": "N/A 表示暂不支持",
       "nodata": "您还没有添加站点，请前往『站点设置』添加站点。"
@@ -981,6 +982,7 @@
       "createSuccess": "辅种任务创建完成，请到辅种任务列表中进行后续操作",
       "createError": "辅种任务创建失败",
       "noItem": "没有符合条件的种子",
+      "filterSearchResults": "过滤搜索结果",
       "savePath": "保存目录：",
       "defaultPath": "默认目录",
       "setSavePath": "设置保存目录",

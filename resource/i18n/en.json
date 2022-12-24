@@ -224,7 +224,8 @@
         "downloaded":"Downloaded",
         "uploads": "Uploaded",
         "trueDownloaded": "True Downloaded",
-        "classPoints": "Class Points"
+        "classPoints": "Class Points",
+        "alternative": "Alternative"
       },
       "tip": "N/A means no support",
       "nodata": "You have not added a site, please go to [Sites] to add a site."
@@ -986,6 +987,7 @@
       "createSuccess": "Task creation completed",
       "createError": "Task creation failed",
       "noItem": "No matching seeds",
+      "filterSearchResults": "Filter search results",
       "savePath": "Save Path: ",
       "defaultPath": "Default Path",
       "setSavePath": "Set Save Path",
