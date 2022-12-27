@@ -389,7 +389,8 @@ export default Vue.extend({
         downloadOptions = Object.assign(downloadOptions, {
           title: item.title,
           url: item.url,
-          link: item.link
+          link: item.link,
+          imdbId: item.imdbId
         });
         items.push(downloadOptions);
       });
@@ -403,7 +404,8 @@ export default Vue.extend({
         downloadOptions = Object.assign(downloadOptions, {
           title: item.title,
           url: item.url,
-          link: item.link
+          link: item.link,
+          imdbId: item.imdbId
         });
         items.push(downloadOptions);
       });
@@ -506,17 +508,17 @@ export default Vue.extend({
           text: this.$t("keepUploadTask.headers.site"),
           align: "center",
           width: "60px",
-          value: "data.title"
+          value: "site.name"
         },
         {
           text: this.$t("keepUploadTask.headers.title"),
           align: "left",
-          value: "data.title"
+          value: "title"
         },
         {
           text: this.$t("keepUploadTask.headers.size"),
           align: "right",
-          value: "data.size"
+          value: "size"
         },
         {
           text: this.$t("keepUploadTask.headers.time"),
