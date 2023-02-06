@@ -20,7 +20,6 @@
         return [];
       }
       let site = options.site;
-      site.searchEntryConfig = options.entry
       let selector =
         options.resultSelector || "table.data-table";
       let table = options.page.find(selector);
@@ -51,6 +50,8 @@
         leechers: -1,
         // 完成数量
         completed: -1,
+        // 评论数量
+        comments: -1,
         // 分类
         category: 0
       };
@@ -136,9 +137,8 @@
           if (imdbId.length > 0)
           {
             imdbId = imdbId.text().replace(/\D/g,'');
-            console.log(imdbId)
             if (imdbId.length < 7)
-              imdbId.padStart(7, '0');
+              imdbId = imdbId.padStart(7, '0');
       
             imdbId = "tt" + imdbId;
           }
@@ -148,7 +148,7 @@
 
           let data = {
             title: title.text().trim(),
-            subTitle: this.getSubTitle(title, row),
+            subTitle: this.getSubTitle(title, row).trim(),
             link,
             url: url,
             size:
@@ -169,16 +169,19 @@
             seeders:
               fieldIndex.seeders == -1
                 ? ""
-                : cells.eq(fieldIndex.seeders).text() || 0,
+                : cells.eq(fieldIndex.seeders).text().trim() || 0,
             leechers:
               fieldIndex.leechers == -1
                 ? ""
-                : cells.eq(fieldIndex.leechers).text() || 0,
+                : cells.eq(fieldIndex.leechers).text().trim() || 0,
             completed:
               fieldIndex.completed == -1
                 ? ""
-                : cells.eq(fieldIndex.completed).text() || 0,
-            comments: 0,
+                : cells.eq(fieldIndex.completed).text().trim() || 0,
+            comments:
+              fieldIndex.comments == -1
+                ? ""
+                : cells.eq(fieldIndex.comments).text().trim() || 0,
             site: site,
             tags: Searcher.getRowTags(site, row),
             entryName: options.entry.name,
@@ -202,30 +205,6 @@
       }
 
       return results;
-    }
-
-    /**
-     * 获取标签
-     * @param {*} row
-     * @param {*} selectors
-     * @return array
-     */
-    getTags(row, selectors) {
-      let tags = [];
-      if (selectors && selectors.length > 0) {
-        selectors.forEach(item => {
-          if (item.selector) {
-            let result = row.find(item.selector);
-            if (result.length) {
-              tags.push({
-                name: item.name,
-                color: item.color
-              });
-            }
-          }
-        });
-      }
-      return tags;
     }
 
     /**
@@ -271,9 +250,9 @@
         if (returnCell) {
           return cell;
         }
-        result = cell.text();
+        result = cell.text().trim();
       }
-
+      if(result == "")return null;
       return result;
     }
   }
