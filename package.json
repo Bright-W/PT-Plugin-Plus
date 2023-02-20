@@ -91,6 +91,9 @@
     "webpack-cli": "^3.3.12",
     "webpack-merge": "^4.2.2"
   },
+  "resolutions": {
+    "@types/node": "~18.11.9"
+  },
   "eslintConfig": {
     "root": true,
     "env": {
