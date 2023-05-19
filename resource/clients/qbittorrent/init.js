@@ -159,7 +159,7 @@
     addTorrentFromUrl(data, callback) {
       let formData = new FormData();
 
-      formData.append("upLimit", 102400000); //限速100MB/s
+      //formData.append("upLimit", 102400000); //限速100MB/s
       
       if (data.savePath) {
         formData.append("savepath", data.savePath);
