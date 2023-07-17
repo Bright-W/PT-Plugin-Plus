@@ -175,6 +175,10 @@
         formData.append("tags", data.imdbId);
       }
 
+      if (data.category != undefined) {
+        formData.append("category", data.category);
+      }
+
       if (data.upLoadLimit && data.upLoadLimit > 0) {
         formData.append("upLimit", data.upLoadLimit * 1024);
       }
