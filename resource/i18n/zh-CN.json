@@ -194,7 +194,7 @@
         "joinTime": "入站时间",
         "lastUpdateTime": "数据更新于",
         "status": "状态",
-        "uploads": "发布",
+        "uploads": "发布数",
         "trueDownloaded": "真实下载",
         "classPoints": "等级积分",
         "unsatisfieds": "H&R考核中",
@@ -211,6 +211,7 @@
         "seeding": "做种数",
         "seedingSize": "做种体积",
         "seedingTime": "做种时间",
+        "averageSeedtime": "平均做种时间",
         "bonus": "魔力值",
         "seedingPoints": "做种积分",
         "bonusPerHour": "时魔",
@@ -223,9 +224,11 @@
         "downloads": "完成",
         "trueDownloaded": "真实下载",
         "classPoints": "等级积分",
+        "posts": "论坛帖子",
         "uniqueGroups": "独特分组",
         "perfectFLAC": "“完美”FLAC",
-        "alternative": "择一"
+        "alternative": "择一",
+        "days": "天"
       },
       "tip": "N/A 表示暂不支持",
       "nodata": "您还没有添加站点，请前往『站点设置』添加站点。"
@@ -262,6 +265,7 @@
       "userName": "用户名称",
       "userId": "用户UID",
       "userLevel": "用户等级",
+      "userUploads": "用户发布数",
       "showSites": "展示站点",
       "close": "关闭",
       "shareMessage": "这些年走过的路",
@@ -276,6 +280,7 @@
         "lessThanAWeek": "不满一周"
       },
       "total": {
+        "uploads": "发布总数：",
         "uploaded": "上传总量：",
         "downloaded": "下载总量：",
         "seedingSize": "做种总量：",
@@ -284,6 +289,7 @@
       },
       "updateat": "数据更新于：",
       "user": {
+        "uploads":"发布数：",
         "uploaded": "上传量：",
         "downloaded": "下载量：",
         "seedingSize": "做种量：",

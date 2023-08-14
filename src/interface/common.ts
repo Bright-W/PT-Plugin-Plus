@@ -278,7 +278,7 @@ export interface LevelRequirement {
   level?: number;
   name?: string;
   // 间隔要求
-  interval?: number;
+  interval?: string;
   // 日期要求
   requiredDate?: string;
   // 上传数要求
@@ -297,8 +297,10 @@ export interface LevelRequirement {
   seedingPoints?: number;
   // 做种时间要求
   seedingTime?: number;
+  // 平均保种时间要求
+  averageSeedtime?: number;
   // 保种体积要求
-  seedingSize?: number;
+  seedingSize?: string | number;
   // 分享率要求
   ratio?: number;
   // 等级积分要求
@@ -307,6 +309,8 @@ export interface LevelRequirement {
   uniqueGroups?: number;
   // “完美”FLAC要求
   perfectFLAC?: number;
+  // 论坛发帖要求
+  posts?: number;
   // 权限
   privilege?: string;
   // 可选要求
@@ -591,6 +595,8 @@ export interface UserInfo {
   seedingPoints?: number;
   // 做种时间要求
   seedingTime?: number;
+  // 平均保种时间
+  averageSeedtime?: number;
   // 时魔
   bonusPerHour?: number;
   // 积分页面
@@ -621,10 +627,12 @@ export interface UserInfo {
   lastErrorMsg?: string;
   // 消息数量
   messageCount?: number;
-  // 独特分组
+  // 独特分组 
   uniqueGroups?: number;
   // “完美”FLAC
   perfectFLAC?: number;
+  // 论坛发帖
+  posts?: number;
   // 下一等级
   nextLevels?: LevelRequirement[];
   [key: string]: any;

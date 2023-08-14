@@ -113,13 +113,21 @@
           "filters": ["query.text().replace(/(Registration date|注册日期|註冊日期)/g, '').trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         },
         "uploads": {
-          "selector": [".badge-user .fa-upload + span"],
-          "filters": ["query ? parseFloat(query.text().trim()) : 0"]
+          "selector": [".badge-user .fa-upload + span", "dt a[href$='/uploads']"],
+          "switchFilters": [
+            ["query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"],
+            ["query ? parseInt(query.parent().next().text().trim().replace(/,/g,'')) : 0"]
+          ]
         },
         "unsatisfiedsPage": {
           "selector": ["a[href$='unsatisfieds']:first"],
           "attribute": "href",
           "filters": ["query ? new URL(query).pathname : null"]
+        },
+        "averageSeedtime": {
+          "selector": ["table.table-condensed.table-striped.table-bordered:first td:contains('Average Seedtime') + td", "table.table-condensed.table-striped.table-bordered:first td:contains('平均做种时间') + td", "table.table-condensed.table-striped.table-bordered:first td:contains('平均做種時間') + td",
+            "dt:contains('Average Seedtime') + dd", "dt:contains('平均做种时间') + dd", "dt:contains('平均做種時間') + dd"],
+          "filters": ["query.text().trim().timeToDays()"]
         }
       }
     },
@@ -128,8 +136,8 @@
       "page": "$user.bonusPage$",
       "fields": {
         "bonusPerHour": {
-          "selector": [".table-condensed tr:last"],
-          "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
+          "selector": [".table-condensed tr:last",".panelV2 dl.key-value dd:nth(2)"],
+          "filters": ["parseFloat(query.text().replace(/,/g,'').match(/[\\d.]+/)[0])"]
         }
       }
     },
