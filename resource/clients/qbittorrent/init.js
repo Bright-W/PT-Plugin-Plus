@@ -183,6 +183,11 @@
         formData.append("upLimit", data.upLoadLimit * 1024);
       }
 
+      if (data.skipHashCheck != undefined) {
+        formData.append("skip_checking", data.skipHashCheck);
+      }
+
+
       let url = data.url;
 
       // 磁性连接

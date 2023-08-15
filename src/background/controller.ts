@@ -271,6 +271,10 @@ export default class Controller {
           category: downloadOptions.savePath !== undefined && downloadOptions.savePath.includes(',') ? downloadOptions.savePath.split(',')[1] : null,
           imdbId: downloadOptions.tagIMDb ? downloadOptions.imdbId : null,
           upLoadLimit: siteConfig !== undefined ? siteConfig.upLoadLimit : null,
+          skipHashCheck: 
+            clientConfig.options.skipHashCheck === undefined
+              ? false
+              : clientConfig.options.skipHashCheck,
         })
         .then((result: any) => {
           this.service.logger.add({

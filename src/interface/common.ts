@@ -36,6 +36,7 @@ export interface DownloadClient {
   autoStart?: boolean;
   tagIMDb?: boolean;
   type?: string;
+  skipHashCheck?: boolean;
 }
 
 /**

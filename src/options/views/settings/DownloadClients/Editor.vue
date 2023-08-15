@@ -46,6 +46,12 @@
             v-if="['qbittorrent'].includes(option.type)"
           ></v-switch>
 
+          <v-switch
+            :label="$t('settings.downloadClients.editor.skipHashCheck')"
+            v-model="option.skipHashCheck"
+            v-if="['qbittorrent'].includes(option.type)"
+          ></v-switch>
+
           <v-text-field
             :value="option.type"
             :label="$t('settings.downloadClients.editor.type')"
