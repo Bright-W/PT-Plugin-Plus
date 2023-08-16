@@ -78,7 +78,7 @@
         }
 
         // 发布时间
-        if (cell.find("a[href*='age']").length) {
+        if (cell.find("a[href*='age']").length || text == "Age") {
           fieldIndex.time = index;
           fieldIndex.author =
             index == fieldIndex.author ? -1 : fieldIndex.author;
@@ -86,7 +86,7 @@
         }
 
         // 大小
-        if (cell.find("a[href*='size']").length) {
+        if (cell.find("a[href*='size']").length || text == "Size") {
           fieldIndex.size = index;
           fieldIndex.author =
             index == fieldIndex.author ? -1 : fieldIndex.author;
@@ -94,7 +94,7 @@
         }
 
         // 种子数
-        if (cell.find("a[href*='seed']").length) {
+        if (cell.find("a[href*='seed']").length || text == "S") {
           fieldIndex.seeders = index;
           fieldIndex.author =
             index == fieldIndex.author ? -1 : fieldIndex.author;
@@ -102,7 +102,7 @@
         }
 
         // 下载数
-        if (cell.find("a[href*='leech']").length) {
+        if (cell.find("a[href*='leech']").length || text == "L") {
           fieldIndex.leechers = index;
           fieldIndex.author =
             index == fieldIndex.author ? -1 : fieldIndex.author;
@@ -110,7 +110,7 @@
         }
 
         // 完成数
-        if (cell.find("a[href*='complete']").length) {
+        if (cell.find("a[href*='complete']").length || text == "C") {
           fieldIndex.completed = index;
           fieldIndex.author =
             index == fieldIndex.author ? -1 : fieldIndex.author;

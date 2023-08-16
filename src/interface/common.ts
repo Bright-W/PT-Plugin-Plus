@@ -540,6 +540,8 @@ export interface SearchEntry extends SearchEntryConfig {
   appendToSearchKeyString?: string;
   // 追加到查询字符串的内容
   appendQueryString?: string;
+  IMDBEntry?: string[];
+  IMDBResultSelector?: string;
 }
 
 export interface UIOptions {

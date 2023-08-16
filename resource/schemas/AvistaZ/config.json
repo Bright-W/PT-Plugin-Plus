@@ -17,7 +17,9 @@
     "resultType": "html",
     "parseScriptFile": "/schemas/AvistaZ/getSearchResult.js",
     "resultSelector": "div.table-responsive > table:first",
-    "enabled": true
+    "enabled": true,
+    "IMDBEntry": ["/movies?imdb=$key$", "/tv-shows?imdb=$key$"],
+    "IMDBResultSelector": "div.overlay-top a:first" 
   }], 
   "searchEntryConfig": {
     "fieldSelector": {

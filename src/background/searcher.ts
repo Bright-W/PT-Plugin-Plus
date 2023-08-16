@@ -139,10 +139,12 @@ export class Searcher {
       }
 
       // 提取 IMDb 编号，如果带整个网址，则只取编号部分
+      let isIMDBsearch = false;
       let imdb = key.match(/(tt\d+)/);
       let autoMatched = false;
       if (imdb && imdb.length >= 2) {
         key = imdb[1];
+        isIMDBsearch = true;
       }
 
       // 将所有 . 替换为空格
@@ -209,6 +211,153 @@ export class Searcher {
       if (!searchEntryConfig.keepOriginKey) {
         // 转换 uri
         key = encodeURIComponent(key);
+      }
+      if(isIMDBsearch && schema.name == "AvistaZ"){
+        searchConfig.entry.forEach((entry: SearchEntry) => {
+            // entryCount++;
+            (entry.IMDBEntry || ["/movies?imdb=$key$", "/tv-shows?imdb=$key$"]).forEach((imdbsearchentry: string) => {
+            $.ajax({
+              url: site.url + imdbsearchentry.replace(KEY,key),
+              cache: true,
+              dataType: "text",
+              contentType: "text/plain",
+              timeout: 30000,
+              method: ERequestMethod.GET,
+            })
+              .done((result: any) => {
+                 if (result && typeof result == "string" && result.length > 100) {
+                  let doc = new DOMParser().parseFromString(result, "text/html");
+                  let IMDBselector = entry.IMDBResultSelector || "div.overlay-top a:first";
+                  let link = $(doc).find(IMDBselector);
+                  if(link){
+                    //https://avistaz.to/movie/49264-my-beautiful-man-eternal
+                    let idregex = (link.attr("href") || "").match(/\/(\d+)-/);
+                    let id = "";
+                    if (idregex && idregex.length >= 2) {
+                      id = idregex[1];
+                      // let searchPage = "/movies/torrents/49424?quality=all";
+                      let searchPage = "/movies/torrents/" + id + "?quality=all";
+
+                      if (searchEntryConfig) {
+                        entry.parseScriptFile =
+                          searchEntryConfig.parseScriptFile || entry.parseScriptFile;
+                        entry.resultType = searchEntryConfig.resultType || entry.resultType;
+                        entry.requestDataType = searchEntryConfig.requestDataType || entry.requestDataType;
+                        entry.resultSelector =
+                          searchEntryConfig.resultSelector || entry.resultSelector;
+                        entry.headers = searchEntryConfig.headers || entry.headers;
+                        entry.asyncParse = searchEntryConfig.asyncParse || entry.asyncParse;
+                        entry.requestData = searchEntryConfig.requestData;
+                      }
+
+                      // 判断是否指定了搜索页和用于获取搜索结果的脚本
+                      if (searchPage && entry.parseScriptFile && entry.enabled !== false) {
+                        let rows: number =
+                          this.options.search && this.options.search.rows
+                            ? this.options.search.rows
+                            : 10;
+                        let url: string = site.url + searchPage;
+
+                        entryCount++;
+
+                        let scriptPath = entry.parseScriptFile;
+                        // 判断是否为相对路径
+                        if (scriptPath.substr(0, 1) !== "/") {
+                          scriptPath = `${searchConfig.rootPath}${scriptPath}`;
+                        }
+
+                        entry.parseScript = this.parseScriptCache[scriptPath];
+
+                        if (!entry.parseScript) {
+                          this.service.debug("searchTorrent: getScriptContent", scriptPath);
+                          APP.getScriptContent(scriptPath)
+                            .done((script: string) => {
+                              this.service.debug(
+                                "searchTorrent: getScriptContent done",
+                                scriptPath
+                              );
+                              this.parseScriptCache[scriptPath] = script;
+                              entry.parseScript = script;
+                              this.getSearchResult(
+                                url,
+                                site,
+                                Object.assign(PPF.clone(searchEntryConfig), PPF.clone(entry)),
+                                searchConfig.torrentTagSelectors
+                              )
+                                .then((result: any) => {
+                                  this.service.debug(
+                                    "searchTorrent: getSearchResult done",
+                                    url
+                                  );
+                                  if (result && result.length) {
+                                    results.push(...result);
+                                  }
+                                  doneCount++;
+
+                                  if (doneCount === entryCount || results.length >= rows) {
+                                    resolve(results.slice(0, rows));
+                                  }
+                                })
+                                .catch((result: any) => {
+                                  this.service.debug(
+                                    "searchTorrent: getSearchResult catch",
+                                    url,
+                                    result
+                                  );
+                                  doneCount++;
+
+                                  if (doneCount === entryCount) {
+                                    if (results.length > 0) {
+                                      resolve(results.slice(0, rows));
+                                    } else {
+                                      reject(result);
+                                    }
+                                  }
+                                });
+                            })
+                            .fail(error => {
+                              this.service.debug(
+                                "searchTorrent: getScriptContent fail",
+                                error
+                              );
+                            });
+                        } else {
+                          this.getSearchResult(
+                            url,
+                            site,
+                            Object.assign(PPF.clone(searchEntryConfig), PPF.clone(entry)),
+                            searchConfig.torrentTagSelectors
+                          )
+                            .then((result: any) => {
+                              if (result && result.length) {
+                                results.push(...result);
+                              }
+                              doneCount++;
+
+                              if (doneCount === entryCount || results.length >= rows) {
+                                resolve(results.slice(0, rows));
+                              }
+                            })
+                            .catch((result: any) => {
+                              doneCount++;
+
+                              if (doneCount === entryCount) {
+                                if (results.length > 0) {
+                                  resolve(results.slice(0, rows));
+                                } else {
+                                  reject(result);
+                                }
+                              }
+                            });
+                        }
+                      }
+                    }
+                  }
+                 }
+              });
+          });
+
+        });
       }
       // 遍历需要搜索的入口
       searchConfig.entry.forEach((entry: SearchEntry) => {
