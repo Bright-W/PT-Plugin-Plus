@@ -205,6 +205,8 @@ export class Searcher {
       let results: any[] = [];
       let entryCount = 0;
       let doneCount = 0;
+      let avzentryCount = 0;
+      let avzdoneCount = 0;
 
       const KEY = "$key$";
       // for some json post API
@@ -229,14 +231,16 @@ export class Searcher {
                   let doc = new DOMParser().parseFromString(result, "text/html");
                   let IMDBselector = entry.IMDBResultSelector || "div.overlay-top a:first";
                   let link = $(doc).find(IMDBselector);
-                  if(link){
+                  // if(link){
                     //https://avistaz.to/movie/49264-my-beautiful-man-eternal
                     let idregex = (link.attr("href") || "").match(/\/(\d+)-/);
                     let id = "";
-                    if (idregex && idregex.length >= 2) {
+                    if (idregex && idregex.length >= 2) 
+                    {
                       id = idregex[1];
+                    }
                       // let searchPage = "/movies/torrents/49424?quality=all";
-                      let searchPage = "/movies/torrents/" + id + "?quality=all";
+                      let searchPage = "/movies/torrents/" + (id === ""? "0" : id) + "?quality=all";
 
                       if (searchEntryConfig) {
                         entry.parseScriptFile =
@@ -258,7 +262,7 @@ export class Searcher {
                             : 10;
                         let url: string = site.url + searchPage;
 
-                        entryCount++;
+                        avzentryCount++;
 
                         let scriptPath = entry.parseScriptFile;
                         // 判断是否为相对路径
@@ -292,9 +296,9 @@ export class Searcher {
                                   if (result && result.length) {
                                     results.push(...result);
                                   }
-                                  doneCount++;
+                                  avzdoneCount++;
 
-                                  if (doneCount === entryCount || results.length >= rows) {
+                                  if (avzdoneCount === avzentryCount || results.length >= rows) {
                                     resolve(results.slice(0, rows));
                                   }
                                 })
@@ -304,9 +308,9 @@ export class Searcher {
                                     url,
                                     result
                                   );
-                                  doneCount++;
+                                  avzdoneCount++;
 
-                                  if (doneCount === entryCount) {
+                                  if (avzdoneCount === avzentryCount) {
                                     if (results.length > 0) {
                                       resolve(results.slice(0, rows));
                                     } else {
@@ -332,16 +336,16 @@ export class Searcher {
                               if (result && result.length) {
                                 results.push(...result);
                               }
-                              doneCount++;
+                              avzdoneCount++;
 
-                              if (doneCount === entryCount || results.length >= rows) {
+                              if (avzdoneCount === avzentryCount || results.length >= rows) {
                                 resolve(results.slice(0, rows));
                               }
                             })
                             .catch((result: any) => {
-                              doneCount++;
+                              avzdoneCount++;
 
-                              if (doneCount === entryCount) {
+                              if (avzdoneCount === avzentryCount) {
                                 if (results.length > 0) {
                                   resolve(results.slice(0, rows));
                                 } else {
@@ -351,14 +355,15 @@ export class Searcher {
                             });
                         }
                       }
-                    }
-                  }
+                    
+                  // }
                  }
               });
           });
 
         });
       }
+      else{
       // 遍历需要搜索的入口
       searchConfig.entry.forEach((entry: SearchEntry) => {
         let searchPage = entry.entry || siteSearchPage;
@@ -600,6 +605,7 @@ export class Searcher {
         result.type = EDataResultType.error;
         reject(result);
       }
+    }
 
       this.service.debug("searchTorrent: quene done");
     });
