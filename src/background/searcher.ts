@@ -214,7 +214,7 @@ export class Searcher {
         // 转换 uri
         key = encodeURIComponent(key);
       }
-      if(isIMDBsearch && schema.name == "AvistaZ"){
+      if(schema && isIMDBsearch && schema.name == "AvistaZ"){
         searchConfig.entry.forEach((entry: SearchEntry) => {
             // entryCount++;
             (entry.IMDBEntry || ["/movies?imdb=$key$", "/tv-shows?imdb=$key$"]).forEach((imdbsearchentry: string) => {
