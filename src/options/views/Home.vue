@@ -103,7 +103,7 @@
                   </template>
                   <hr>
                 </template>
-              <!--Vuetify 点击后新开窗口也-->
+                <!--点击后在新标签页打开-->
                 <template v-for="link of props.item.userQuickLinks">
                   <v-btn outline elevation="2" class="x-small" target="_blank"
                          :color="link.color" :href="link.href" >{{ link.desc }}</v-btn>
@@ -115,7 +115,7 @@
             {{ showUserLevel ? props.item.user.levelName : "****" }}
             <template v-if="showLevelRequirements">
               <template v-if="props.item.levelRequirements">
-                <template v-if="props.item.user.nextLevels && props.item.user.nextLevels.length > 0">
+                <template v-if="isUserGroup(props.item) && props.item.user.nextLevels && props.item.user.nextLevels.length > 0">
                   <template v-for="nextLevel in props.item.user.nextLevels">
                     <div>
                       <v-icon small>keyboard_tab</v-icon>
@@ -192,7 +192,7 @@
                   </template>
                 </template>
                 <template v-else-if="props.item.user.name">
-                  <v-icon small color="green darken-4">done</v-icon>
+                  <v-icon small color="green darken-4">{{ getDoneIcon(props.item) }}</v-icon>
                 </template>
                 <v-card class="levelRequirement">
                   <template v-for="levelRequirement of props.item.levelRequirements">
@@ -398,10 +398,10 @@
             {{ props.item.user.joinTime | timeAgo(showWeek) }}
           </td>
           <td v-if="showColumn('user.lastUpdateTime')" class="number">
-            <v-btn depressed small :to="`statistic/${props.item.host}`" :title="$t('home.statistic')">{{
-                props.item.user.lastUpdateTime |
-                formatDate("YYYY-MM-DD HH:mm:ss")
-            }}</v-btn>
+            <v-btn depressed small class="lastUpdateTime"
+                   :to="`statistic/${props.item.host}`" :title="$t('home.statistic')">
+              {{ props.item.user.lastUpdateTime | formatDate("YYYY-MM-DD HH:mm:ss") }}
+            </v-btn>
           </td>
           <td v-if="showColumn('user.lastUpdateStatus')" class="center">
             <v-progress-circular indeterminate :width="3" size="30" color="green" v-if="props.item.user.isLoading">
@@ -696,6 +696,36 @@ export default Vue.extend({
       }
     },
     /**
+     * 等级名称有中英文之分，没法直接区分
+     */
+    getUserLevelGroup(site: Site) {
+      let userLevel = site.user?.levelName?.toLowerCase()
+      let specialNames = {
+        manager: 'admin,moderator,sys,retire,管理,版主,发种,保种,上传,退休'.split(/[,，]/ig),
+        vip: 'vip,贵宾'.split(/[,，]/ig),
+      }
+      specialNames.manager = specialNames.manager.filter(_ => !!_)
+      specialNames.vip = specialNames.vip.filter(_ => !!_)
+      let res = 'user'
+      for (let k in specialNames) {
+        // @ts-ignore
+        let levelNames = specialNames[k]
+        if (levelNames.some((n: string) => userLevel?.includes(n))) {
+          res = k
+          break
+        }
+      }
+      return res
+    },
+    getDoneIcon(site: Site) {
+      const icons = {manager: 'manage_accounts', vip: 'verified', user: 'done'}
+      // @ts-ignore
+      return icons[this.getUserLevelGroup(site)] || icons.user
+    },
+    isUserGroup(site: Site) {
+      return this.getUserLevelGroup(site) === 'user'
+    },
+    /**
      * 格式化一些用户信息
      */
     formatUserInfo(user: UserInfoEx, site: Site) {
@@ -740,19 +770,15 @@ export default Vue.extend({
             if (Number(levelRequirement.level) < userLevel)
               continue;
 
-            if (levelRequirement.alternative)
-            {
-              for (var option of levelRequirement.alternative)
-              {
+            if (levelRequirement.alternative) {
+              for (var option of levelRequirement.alternative) {
                 var newLevelRequirement = Object.assign({}, levelRequirement)
-                for(var key of Object.keys(option) as Array<keyof LevelRequirement>) {
-                  {
-
+                for(var key of Object.keys(option) as Array<keyof LevelRequirement>) {{
                     if (option[key])
                       newLevelRequirement[key] = option[key] as any
                   }
                 }
-                //console.log(newLevelRequirement)
+                // console.log(newLevelRequirement)
                 var nextLevel = this.calculateNextLeve(user, newLevelRequirement);
                 if (nextLevel) {
                   //console.log(nextLevel)
@@ -766,9 +792,7 @@ export default Vue.extend({
 
               if (user.nextLevels.length)
                   break;
-            }
-            else
-            {
+            } else {
               let nextLevel = this.calculateNextLeve(user, levelRequirement);
               if (nextLevel) {
                 if (user.nextLevels.length) {
@@ -1245,6 +1269,10 @@ export default Vue.extend({
 
   .select {
     max-width: 180px;
+  }
+
+  .lastUpdateTime {
+    margin-right: 0;
   }
 }
 </style>
