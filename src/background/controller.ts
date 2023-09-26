@@ -259,6 +259,7 @@ export default class Controller {
     let URL = Filters.parseURL(downloadOptions.url);
     let downloadHost = URL.host;
     let siteConfig = this.getSiteFromHost(downloadHost);
+    console.log("doDownload", clientConfig, downloadOptions, host, siteConfig)
     return new Promise((resolve?: any, reject?: any) => {
       clientConfig.client
         .call(EAction.addTorrentFromURL, {
@@ -275,6 +276,7 @@ export default class Controller {
             clientConfig.options.skipHashCheck === undefined
               ? false
               : clientConfig.options.skipHashCheck,
+          clientOptions: clientConfig.options,
         })
         .then((result: any) => {
           this.service.logger.add({
