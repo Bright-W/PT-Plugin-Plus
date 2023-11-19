@@ -1,14 +1,14 @@
 {
-  "name": "象站",
+  "name": "agsv",
   "timezoneOffset": "+0800",
   "schema": "NexusPHP",
-  "url": "https://ptvicomo.net/",
-  "description": "大象自中虚，中虚真不渝！",
-  "icon": "https://ptvicomo.net/favicon.ico",
+  "url": "https://www.agsvpt.com/",
+  "description": "The Ultimate File Sharing Experience",
+  "icon": "https://www.agsvpt.com/favicon.ico",
   "tags": [
     "综合"
   ],
-  "host": "ptvicomo.net",
+  "host": "www.agsvpt.com",
   "plugins": [
     {
       "name": "种子列表",
@@ -109,24 +109,6 @@
             "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
             "(query != 0) ? query.sizeToNumber() : 0"
           ]
-        }
-      }
-    },
-    "userExtendInfo": {
-      "merge": true,
-      "fields": {
-        "bonus": {
-          "selector": ["td.rowhead:contains('象草') + td", "td.rowhead:contains('Lily') + td"],
-          "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
-        }
-      }
-    },
-    "bonusExtendInfo": {
-      "prerequisites": "!user.bonusPerHour",
-      "page": "/mybonus.php",
-      "fields": {
-        "bonusPerHour": {
-          "selector": ["#outer td[rowspan]"]
         }
       }
     }
