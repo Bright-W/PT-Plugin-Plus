@@ -277,6 +277,7 @@ export default class Controller {
               ? false
               : clientConfig.options.skipHashCheck,
           clientOptions: clientConfig.options,
+          siteConfig,
         })
         .then((result: any) => {
           this.service.logger.add({
