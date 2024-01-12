@@ -164,10 +164,9 @@
                             nextLevel.trueDownloaded | formatSize
                         }}&nbsp;
                       </template>
-                      <template v-if="nextLevel.totalData">
-                        {{ $t("home.levelRequirement.totalData") }}
-                        {{
-                            nextLevel.totalData | formatSize
+                      <template v-if="nextLevel.totalTraffic">
+                        <v-icon small color="orange darken-4">swap_vert</v-icon>{{
+                            nextLevel.totalTraffic | formatSize
                         }}&nbsp;
                       </template>
                       <template v-if="nextLevel.bonus">
@@ -206,10 +205,6 @@
                       </template>
                       <template v-if="nextLevel.snatches">
                         <v-icon small color="red darken-4">file_download</v-icon>{{ nextLevel.snatches
-                        }}&nbsp;
-                      </template>
-                      <template v-if="nextLevel.downloads">
-                        <v-icon small color="red darken-4">file_download</v-icon>{{ nextLevel.downloads
                         }}&nbsp;
                       </template>
                       <template v-if="nextLevel.uniqueGroups">
@@ -259,12 +254,8 @@
                         {{ $t("home.levelRequirement.trueDownloaded") }}
                         {{ levelRequirement.trueDownloaded }};
                       </template>
-                      <template v-if="levelRequirement.totalData">
-                        {{ $t("home.levelRequirement.totalData") }}
-                        {{ levelRequirement.totalData }};
-                      </template>
-                      <template v-if="levelRequirement.downloads">
-                        <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloads')">file_download</v-icon>{{ levelRequirement.downloads }};
+                      <template v-if="levelRequirement.totalTraffic">
+                        <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.totalTraffic')">swap_vert</v-icon>{{ levelRequirement.totalTraffic }};
                       </template>
                       <template v-if="levelRequirement.ratio">
                         <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.ratio')">balance</v-icon>{{ levelRequirement.ratio }};
@@ -339,12 +330,8 @@
                             {{ $t("home.levelRequirement.trueDownloaded") }}
                             {{ option.trueDownloaded }};
                           </template>
-                          <template v-if="option.totalData">
-                            {{ $t("home.levelRequirement.totalData") }}
-                            {{ option.totalData }};
-                          </template>
-                          <template v-if="option.downloads">
-                            <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloads')">file_download</v-icon>{{ option.downloads }};
+                          <template v-if="option.totalTraffic">
+                            <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.totalTraffic')">swap_vert</v-icon>{{ option.totalTraffic }};
                           </template>
                           <template v-if="option.ratio">
                             <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.ratio')">balance</v-icon>{{ option.ratio }};
@@ -1118,14 +1105,6 @@ export default Vue.extend({
           nextLevel.level = levelRequirement.level;
         }
       }
-      if (levelRequirement.downloads) {
-        let userDownloads = user.downloads ? user.downloads as number : 0;
-        let requiredDownloads = levelRequirement.downloads as number;
-        if (userDownloads < requiredDownloads) {
-          nextLevel.downloads = requiredDownloads - userDownloads;
-          nextLevel.level = levelRequirement.level;
-        }
-      }
 
       if (levelRequirement.trueDownloaded) {
         let userTrueDownloaded = user.trueDownloaded ? (user.trueDownloaded as number) : 0;
@@ -1137,13 +1116,13 @@ export default Vue.extend({
           nextLevel.level = levelRequirement.level;
         }
       }
-      if (levelRequirement.totalData) {
-        let usertotalData = user.totalData ? (user.totalData as number) : 0;
-        let requiredtotalData = this.fileSizetoLength(
-          levelRequirement.totalData as string
+      if (levelRequirement.totalTraffic) {
+        let userTotalTraffic = user.totalTraffic ? (user.totalTraffic as number) : 0;
+        let requiredTotalTraffic = this.fileSizetoLength(
+          levelRequirement.totalTraffic as string
         );
-        if (usertotalData < requiredtotalData) {
-          nextLevel.totalData = requiredtotalData - usertotalData;
+        if (userTotalTraffic < requiredTotalTraffic) {
+          nextLevel.totalTraffic = requiredTotalTraffic - userTotalTraffic;
           nextLevel.level = levelRequirement.level;
         }
       }
