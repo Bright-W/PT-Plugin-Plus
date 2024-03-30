@@ -100,6 +100,7 @@ export class Searcher {
         siteService.options.searchEntryConfig
       );
       let searchEntryConfigQueryString = "";
+      let searchEntryConfigRequestData:Dictionary<any>;
 
       if (siteService.options.searchEntry) {
         searchConfig.rootPath = `sites/${host}/`;
@@ -158,7 +159,7 @@ export class Searcher {
 
         // 搜索区域
         if (searchEntryConfig.area) {
-                    searchEntryConfig.area.some((area: SearchEntryConfigArea) => {
+          searchEntryConfig.area.some((area: SearchEntryConfigArea) => {
             // 是否有自动匹配关键字的正则
             if (
               area.keyAutoMatch &&
@@ -173,6 +174,9 @@ export class Searcher {
               if (area.queryString) {
                 searchEntryConfigQueryString = area.queryString;
               }
+
+              if (area.requestData)
+                searchEntryConfigRequestData = area.requestData;
 
               // 追加查询字符串
               if (area.appendQueryString) {
@@ -513,7 +517,7 @@ export class Searcher {
             searchEntryConfig.resultSelector || entry.resultSelector;
           entry.headers = searchEntryConfig.headers || entry.headers;
           entry.asyncParse = searchEntryConfig.asyncParse || entry.asyncParse;
-          entry.requestData = searchEntryConfig.requestData;
+          entry.requestData = searchEntryConfigRequestData || searchEntryConfig.requestData;
         }
 
         // 判断是否指定了搜索页和用于获取搜索结果的脚本
@@ -602,6 +606,10 @@ export class Searcher {
                     "user"
                   );
                 }
+
+                entry.headers[key] = PPF.replaceKeys(
+                  entry.headers[key], site, "site"
+                );
               }
             }
           }

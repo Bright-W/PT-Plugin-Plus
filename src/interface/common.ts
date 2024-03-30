@@ -486,6 +486,7 @@ export interface SearchEntryConfigArea {
   page?: string;
   replaceKeyByTVDB?: string[];
   convertToANIDB?: boolean;
+  requestData?: Dictionary<any>;
 }
 
 export interface ISearchFieldIndex {
