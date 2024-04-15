@@ -28,6 +28,7 @@ import URLParse from "url-parse";
 import { User } from "./user";
 import { MovieInfoService } from "@/service/movieInfoService";
 import parseTorrent from "parse-torrent";
+import {PPF} from "@/service/public";
 
 type Service = PTPlugin;
 export default class Controller {
@@ -892,6 +893,7 @@ export default class Controller {
    * @param options
    */
   public getTorrentDataFromURL(options: string | any): Promise<any> {
+    console.log("getTorrentDataFromURL", options)
     return new Promise<any>((resolve?: any, reject?: any) => {
       let url = "";
       if (typeof options === "string") {
@@ -907,6 +909,29 @@ export default class Controller {
       let requestMethod = ERequestMethod.GET;
       if (site) {
         requestMethod = site.downloadMethod || ERequestMethod.GET;
+        switch (site.name) {
+          case "M-Team":
+            let id = PPF.getIdFromMTURL(url)
+            console.log(`getTorrentDataFromURL.M-Team ${url} -> ${id}`, options)
+            if (id) {
+              if (parseInt(id)) {
+                let torrentURL = PPF.resolveMTDownloadURL(id, site)
+                console.log(`getTorrentDataFromURL.M-Team1 ${url} -> ${torrentURL}`, options)
+                url = torrentURL
+              } else {
+                console.log(`getTorrentDataFromURL.M-Team2 ${url}, id 链接可能已是直链, 不进行转换...`, options)
+              }
+            } else {
+              reject(APP.createErrorMessage(
+                  this.service.i18n.t("service.controller.invalidTorrent", {
+                    link: EWikiLink.faq
+                  })
+              ));
+            }
+            break
+          default:
+            break
+        }
       }
       let file = new FileDownloader({
         url,
@@ -1092,6 +1117,13 @@ export default class Controller {
   public resetUserDatas(datas: any) {
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.service.userData.reset(datas);
+      setTimeout(() => {
+        this.service.userData.upgrade().then(r => {
+          console.log('升级站点数据完成')
+        }).catch(e => {
+          console.error('升级站点数据失败', e)
+        })
+      }, 1000)
       resolve();
     });
   }
