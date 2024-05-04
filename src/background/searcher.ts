@@ -17,13 +17,13 @@ import {
   BASE_TAG_COLORS,
   ERequestType
 } from "@/interface/common";
-import { APP } from "@/service/api";
-import { SiteService } from "./site";
+import {APP} from "@/service/api";
+import {SiteService} from "./site";
 import PTPlugin from "./service";
 import extend from "extend";
-import { InfoParser } from "./infoParser";
-import { PPF } from "@/service/public";
-import { PageParser } from "./pageParser";
+import {InfoParser} from "./infoParser";
+import {PPF} from "@/service/public";
+import {PageParser} from "./pageParser";
 
 export type SearchConfig = {
   site?: Site;
@@ -62,7 +62,8 @@ export class Searcher {
 
   private searchRequestQueue: Dictionary<JQueryXHR> = {};
 
-  constructor(public service: PTPlugin) { }
+  constructor(public service: PTPlugin) {
+  }
 
   /**
    * 搜索种子
@@ -100,7 +101,7 @@ export class Searcher {
         siteService.options.searchEntryConfig
       );
       let searchEntryConfigQueryString = "";
-      let searchEntryConfigRequestData:Dictionary<any>;
+      let searchEntryConfigRequestData: Dictionary<any>;
 
       if (siteService.options.searchEntry) {
         searchConfig.rootPath = `sites/${host}/`;
@@ -139,13 +140,13 @@ export class Searcher {
         return;
       }
 
+      let isImdbSearch = false;
       // 提取 IMDb 编号，如果带整个网址，则只取编号部分
-      let isIMDBsearch = false;
       let imdb = key.match(/(tt\d+)/);
       let autoMatched = false;
       if (imdb && imdb.length >= 2) {
         key = imdb[1];
-        isIMDBsearch = true;
+        isImdbSearch = true
       }
 
       // 将所有 . 替换为空格
@@ -184,8 +185,7 @@ export class Searcher {
               }
 
               // 获取TVDB的信息以支持对网站的IMDB搜索
-              if (area.name == "IMDB" && area.replaceKeyByTVDB)
-              {
+              if (area.name == "IMDB" && area.replaceKeyByTVDB) {
                 try {
                   $.ajax({
                     url: "https://thetvdb.com/api/GetSeriesByRemoteID.php?imdbid=" + key,
@@ -198,13 +198,11 @@ export class Searcher {
                   }).done((result: any) => {
                     let doc = new DOMParser().parseFromString(result, "text/html");
                     for (var replaceKey of area.replaceKeyByTVDB as string[]) {
-                      switch (replaceKey)
-                      {
+                      switch (replaceKey) {
                         case "year":
                           let year = "";
                           let date = $(doc).find("FirstAired").text();
-                          if (date != "")
-                          {
+                          if (date != "") {
                             year = new Date(date).getFullYear().toString();
                           }
                           searchEntryConfigQueryString = searchEntryConfigQueryString.replace("$year$", year);
@@ -213,8 +211,7 @@ export class Searcher {
                           let seriesName = $(doc).find("SeriesName").text();
                           if (seriesName != "")
                             searchEntryConfigQueryString = searchEntryConfigQueryString.replace("$name$", seriesName);
-                          else
-                          {
+                          else {
                             skipSearch = true;
                             return;
                           }
@@ -224,13 +221,13 @@ export class Searcher {
                       }
                     }
                   })
-                  .fail((jqXHR, textStatus, errorThrown) => {
-                    skipSearch = true;
-                    result.type = EDataResultType.unknown;
-                    reject(result);
-                    return;
-                  });
-                }catch {
+                    .fail((jqXHR, textStatus, errorThrown) => {
+                      skipSearch = true;
+                      result.type = EDataResultType.unknown;
+                      reject(result);
+                      return;
+                    });
+                } catch {
                   skipSearch = true;
                   result.type = EDataResultType.unknown;
                   reject(result);
@@ -239,8 +236,7 @@ export class Searcher {
               }
 
               // 转换成ANIDB ID以支持对网站的IMDB搜索
-              if (area.name == "IMDB" && area.convertToANIDB)
-              {
+              if (area.name == "IMDB" && area.convertToANIDB) {
                 try {
                   $.ajax({
                     url: "https://raw.githubusercontent.com/Anime-Lists/anime-lists/master/anime-list.xml",
@@ -254,21 +250,20 @@ export class Searcher {
                     let doc = $.parseHTML(result);
                     let selector = "anime[imdbid*='" + key + "']:first";
                     let anime = $(selector, doc);
-                    if (anime.length > 0 && key.length >= 9)
-                    {
+                    if (anime.length > 0 && key.length >= 9) {
                       let anidbid = anime.attr("anidbid");
                       if (anidbid)
                         searchEntryConfigQueryString = searchEntryConfigQueryString.replace("$anidb$", anidbid);
                     } else {
                       skipSearch = true;
-                     }
+                    }
                   })
-                  .fail((jqXHR, textStatus, errorThrown) => {
-                    skipSearch = true;
-                    result.type = EDataResultType.unknown;
-                    reject(result);
-                    return;
-                  });
+                    .fail((jqXHR, textStatus, errorThrown) => {
+                      skipSearch = true;
+                      result.type = EDataResultType.unknown;
+                      reject(result);
+                      return;
+                    });
                 } catch (error) {
                   skipSearch = true;
                   result.type = EDataResultType.unknown;
@@ -289,7 +284,8 @@ export class Searcher {
               if (area.parseScript) {
                 try {
                   key = eval(area.parseScript);
-                } catch (error) { }
+                } catch (error) {
+                }
               }
 
               return true;
@@ -298,6 +294,7 @@ export class Searcher {
           });
         }
       }
+
 
       if (skipSearch) {
         resolve({
@@ -308,8 +305,7 @@ export class Searcher {
             ESearchResultParseStatus.noTorrents,
             ""
           ),
-          data: {
-          },
+          data: {},
           type: EDataResultType.success
         });
         return;
@@ -329,7 +325,7 @@ export class Searcher {
         // 转换 uri
         key = encodeURIComponent(key);
       }
-      if(schema && isIMDBsearch && schema.name == "AvistaZ"){
+      if(schema && isImdbSearch && schema.name == "AvistaZ"){
         searchConfig.entry.forEach((entry: SearchEntry) => {
             // entryCount++;
             (entry.IMDBEntry || ["/movies?imdb=$key$", "/tv-shows?imdb=$key$"]).forEach((imdbsearchentry: string) => {
@@ -481,13 +477,17 @@ export class Searcher {
       else{
       // 遍历需要搜索的入口
       searchConfig.entry.forEach((entry: SearchEntry) => {
+        if (entry.skipIMDbId && isImdbSearch){
+          return
+        }
+
         let searchPage = entry.entry || siteSearchPage;
 
         // 当已自动匹配规则时，去除入口页面中已指定的关键字字段
         if (
-            autoMatched &&
-            searchPage.indexOf(KEY) !== -1 &&
-            searchEntryConfigQueryString.indexOf(KEY) !== -1
+          autoMatched &&
+          searchPage.indexOf(KEY) !== -1 &&
+          searchEntryConfigQueryString.indexOf(KEY) !== -1
         ) {
           searchPage = PPF.removeQueryStringFromValue(searchPage, KEY);
         }
@@ -523,9 +523,9 @@ export class Searcher {
         // 判断是否指定了搜索页和用于获取搜索结果的脚本
         if (searchPage && entry.parseScriptFile && entry.enabled !== false) {
           let rows: number =
-              this.options.search && this.options.search.rows
-                  ? this.options.search.rows
-                  : 10;
+            this.options.search && this.options.search.rows
+              ? this.options.search.rows
+              : 10;
 
           // 如果有自定义地址，则使用自定义地址
           if (site.cdn && site.cdn.length > 0) {
@@ -617,84 +617,84 @@ export class Searcher {
           if (!entry.parseScript) {
             this.service.debug("searchTorrent: getScriptContent", scriptPath);
             APP.getScriptContent(scriptPath)
-                .done((script: string) => {
-                  this.service.debug(
-                      "searchTorrent: getScriptContent done",
-                      scriptPath
-                  );
-                  this.parseScriptCache[scriptPath] = script;
-                  entry.parseScript = script;
-                  this.getSearchResult(
+              .done((script: string) => {
+                this.service.debug(
+                  "searchTorrent: getScriptContent done",
+                  scriptPath
+                );
+                this.parseScriptCache[scriptPath] = script;
+                entry.parseScript = script;
+                this.getSearchResult(
+                  url,
+                  site,
+                  Object.assign(PPF.clone(searchEntryConfig), PPF.clone(entry)),
+                  searchConfig.torrentTagSelectors
+                )
+                  .then((result: any) => {
+                    this.service.debug(
+                      "searchTorrent: getSearchResult done",
+                      url
+                    );
+                    if (result && result.length) {
+                      results.push(...result);
+                    }
+                    doneCount++;
+
+                    if (doneCount === entryCount || results.length >= rows) {
+                      resolve(results.slice(0, rows));
+                    }
+                  })
+                  .catch((result: any) => {
+                    this.service.debug(
+                      "searchTorrent: getSearchResult catch",
                       url,
-                      site,
-                      Object.assign(PPF.clone(searchEntryConfig), PPF.clone(entry)),
-                      searchConfig.torrentTagSelectors
-                  )
-                      .then((result: any) => {
-                        this.service.debug(
-                            "searchTorrent: getSearchResult done",
-                            url
-                        );
-                        if (result && result.length) {
-                          results.push(...result);
-                        }
-                        doneCount++;
+                      result
+                    );
+                    doneCount++;
 
-                        if (doneCount === entryCount || results.length >= rows) {
-                          resolve(results.slice(0, rows));
-                        }
-                      })
-                      .catch((result: any) => {
-                        this.service.debug(
-                            "searchTorrent: getSearchResult catch",
-                            url,
-                            result
-                        );
-                        doneCount++;
-
-                        if (doneCount === entryCount) {
-                          if (results.length > 0) {
-                            resolve(results.slice(0, rows));
-                          } else {
-                            reject(result);
-                          }
-                        }
-                      });
-                })
-                .fail(error => {
-                  this.service.debug(
-                      "searchTorrent: getScriptContent fail",
-                      error
-                  );
-                });
+                    if (doneCount === entryCount) {
+                      if (results.length > 0) {
+                        resolve(results.slice(0, rows));
+                      } else {
+                        reject(result);
+                      }
+                    }
+                  });
+              })
+              .fail(error => {
+                this.service.debug(
+                  "searchTorrent: getScriptContent fail",
+                  error
+                );
+              });
           } else {
             this.getSearchResult(
-                url,
-                site,
-                Object.assign(PPF.clone(searchEntryConfig), PPF.clone(entry)),
-                searchConfig.torrentTagSelectors
+              url,
+              site,
+              Object.assign(PPF.clone(searchEntryConfig), PPF.clone(entry)),
+              searchConfig.torrentTagSelectors
             )
-                .then((result: any) => {
-                  if (result && result.length) {
-                    results.push(...result);
-                  }
-                  doneCount++;
+              .then((result: any) => {
+                if (result && result.length) {
+                  results.push(...result);
+                }
+                doneCount++;
 
-                  if (doneCount === entryCount || results.length >= rows) {
+                if (doneCount === entryCount || results.length >= rows) {
+                  resolve(results.slice(0, rows));
+                }
+              })
+              .catch((result: any) => {
+                doneCount++;
+
+                if (doneCount === entryCount) {
+                  if (results.length > 0) {
                     resolve(results.slice(0, rows));
+                  } else {
+                    reject(result);
                   }
-                })
-                .catch((result: any) => {
-                  doneCount++;
-
-                  if (doneCount === entryCount) {
-                    if (results.length > 0) {
-                      resolve(results.slice(0, rows));
-                    } else {
-                      reject(result);
-                    }
-                  }
-                });
+                }
+              });
           }
         }
       });
