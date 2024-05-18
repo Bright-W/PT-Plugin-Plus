@@ -149,8 +149,10 @@ export class Searcher {
         isImdbSearch = true
       }
 
+      // 2019.6.26 refactor: 调整搜索方式，”." 转为空格以获取更多搜索结果
+      // 实际测试过程中, np 架构能正常返回, 但是 mt 架构无法返回结果. 从搜索关键词来说这里的替换没有必要
       // 将所有 . 替换为空格
-      key = key.replace(/\./g, " ");
+      // key = key.replace(/\./g, " ");
 
       let skipSearch = false;
       // 是否有搜索入口配置项
@@ -159,12 +161,12 @@ export class Searcher {
         searchEntryConfigQueryString = searchEntryConfig.queryString + "";
 
         // 搜索区域
-        if (searchEntryConfig.area) {
+        if (searchEntryConfig.area && !site.disableSearchTransform) {
           searchEntryConfig.area.some((area: SearchEntryConfigArea) => {
             // 是否有自动匹配关键字的正则
             if (
               area.keyAutoMatch &&
-              new RegExp(area.keyAutoMatch, "").test(key)
+              new RegExp(area.keyAutoMatch, "u").test(key)
             ) {
               // 是否替换默认页面
               if (area.page) {
@@ -274,10 +276,12 @@ export class Searcher {
 
               // 替换关键字
               if (area.replaceKey) {
+                const old = key;
                 key = key.replace(
                   new RegExp(area.replaceKey[0], "g"),
                   area.replaceKey[1]
                 );
+                console.log(`[${site.name}] "${old}" => "${key}"`);
               }
 
               // 解析脚本，最终返回搜索关键字，可调用 payload 里的数据进行关键字替换
