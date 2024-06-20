@@ -43,6 +43,8 @@ export interface DownloadClient {
   qbCategories?: QbCategory[];
   hostnameAsTag?: boolean;
   siteNameAsTag?: boolean;
+  // 自定义 QB 标签
+  customTags?: string[];
 }
 
 /**
