@@ -1,18 +1,14 @@
 {
-    "name": "kamept",
-    "timezoneOffset": "+0800",
-    "description": "kamept",
-    "url": "https://kamept.com/",
-    "icon": "https://kamept.com/favicon.ico",
-    "tags": ["成人", "COS"],
-    "schema": "NexusPHP",
-    "host": "kamept.com",
-    "getInfoAjaxCache": true,
-    "collaborator": [
-        "koal",
-        "amorphobia",
-        "IITII"
+    "name": "雨",
+    "description": "与你相逢，就是奇迹",
+    "url": "https://raingfh.top/",
+    "icon": "https://raingfh.top/favicon.ico",
+    "tags": [ 
+      "综合",
+      "影视"
     ],
+    "schema": "NexusPHP",
+    "host": "raingfh.top",
     "levelRequirements": [
         {
             "level": 1,
@@ -21,7 +17,7 @@
             "downloaded": "50GB",
             "ratio": "1.05",
             "seedingPoints": "40000",
-            "privilege": "可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以进入论坛的“PT交流区”板块；可以删除自己上传的字幕。"
+            "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
         },
         {
             "level": 2,
@@ -38,7 +34,8 @@
             "interval": "15",
             "downloaded": "300GB",
             "ratio": "2.05",
-            "seedingPoints": "150000"
+            "seedingPoints": "150000",
+            "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
         },
         {
             "level": 4,
@@ -56,7 +53,7 @@
             "downloaded": "750GB",
             "ratio": "3.05",
             "seedingPoints": "400000",
-            "privilege": "得到两个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
+            "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
         },
         {
             "level": 6,
@@ -65,7 +62,7 @@
             "downloaded": "1TB",
             "ratio": "3.55",
             "seedingPoints": "600000",
-            "privilege": "得到两个邀请名额；可以更新过期的外部信息；可以查看Extreme User论坛。"
+            "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
         },
         {
             "level": 7,
@@ -86,7 +83,51 @@
             "privilege": "得到十个邀请名额。"
         }
     ],
-    "selectors": {
+  "categories": [
+    {
+      "entry": "torrents.php",
+      "result": "&cat$id$=1",
+      "category": [
+        {
+          "id": 408,
+          "name": "音轨"
+        },
+        {
+          "id": 409,
+          "name": "其它"
+        },
+        {
+          "id": 407,
+          "name": "体育"
+        },
+        {
+          "id": 406,
+          "name": "MV"
+        },
+        {
+          "id": 403,
+          "name": "综艺"
+        },
+        {
+          "id": 402,
+          "name": "电视剧"
+        },
+        {
+          "id": 405,
+          "name": "动漫"
+        },
+        {
+          "id": 404,
+          "name": "纪录片"
+        },
+        {
+          "id": 401,
+          "name": "电影"
+        } 
+      ]
+    }
+  ],
+  "selectors": {
         "userSeedingTorrents": {
             "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
             "fields": {
@@ -106,6 +147,21 @@
                         "(query != 0) ? query.sizeToNumber() : 0"
                     ]
                 }
+            }
+        }
+    },
+    "searchEntryConfig": {
+        "fieldSelector": {
+            "progress": {
+                "selector": ["> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"],
+                "filters": ["query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"]
+            },
+            "status": {
+                "selector": ["> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"],
+                "filters": [
+                    "query ? query.attr('title') : ''",
+                    "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
+                ]
             }
         }
     }

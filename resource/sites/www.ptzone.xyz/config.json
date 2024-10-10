@@ -1,19 +1,13 @@
 {
-    "name": "kamept",
-    "timezoneOffset": "+0800",
-    "description": "kamept",
-    "url": "https://kamept.com/",
-    "icon": "https://kamept.com/favicon.ico",
-    "tags": ["成人", "COS"],
-    "schema": "NexusPHP",
-    "host": "kamept.com",
-    "getInfoAjaxCache": true,
-    "collaborator": [
-        "koal",
-        "amorphobia",
-        "IITII"
-    ],
-    "levelRequirements": [
+  "name": "PTzone",
+  "timezoneOffset": "+0800",
+  "schema": "NexusPHP",
+  "url": "https://www.ptzone.xyz/",
+  "description": "PTzone",
+  "icon": "https://www.ptzone.xyz/favicon.ico",
+  "tags": ["电影"],
+  "host": "www.ptzone.xyz",
+  "levelRequirements": [
         {
             "level": 1,
             "name": "Power User",
@@ -21,7 +15,7 @@
             "downloaded": "50GB",
             "ratio": "1.05",
             "seedingPoints": "40000",
-            "privilege": "可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以进入论坛的“PT交流区”板块；可以删除自己上传的字幕。"
+            "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
         },
         {
             "level": 2,
@@ -38,7 +32,8 @@
             "interval": "15",
             "downloaded": "300GB",
             "ratio": "2.05",
-            "seedingPoints": "150000"
+            "seedingPoints": "150000",
+            "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
         },
         {
             "level": 4,
@@ -56,7 +51,7 @@
             "downloaded": "750GB",
             "ratio": "3.05",
             "seedingPoints": "400000",
-            "privilege": "得到两个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
+            "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
         },
         {
             "level": 6,
@@ -65,7 +60,7 @@
             "downloaded": "1TB",
             "ratio": "3.55",
             "seedingPoints": "600000",
-            "privilege": "得到两个邀请名额；可以更新过期的外部信息；可以查看Extreme User论坛。"
+            "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
         },
         {
             "level": 7,
@@ -86,27 +81,33 @@
             "privilege": "得到十个邀请名额。"
         }
     ],
-    "selectors": {
-        "userSeedingTorrents": {
-            "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
-            "fields": {
-                "seeding": {
-                    "selector": [
-                        "b:first"
-                    ],
-                    "filters": [
-                        "query.text()"
-                    ]
-                },
-                "seedingSize": {
-                    "selector": "",
-                    "filters": [
-                        "query.text().match(/总大小：(.*?)上一页/g)",
-                        "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
-                        "(query != 0) ? query.sizeToNumber() : 0"
-                    ]
-                }
-            }
-        }
+   "searchEntry": [
+    {
+      "name": "全部",
+      "enabled": true
     }
+  ],
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": [
+            "b:first"
+          ],
+          "filters": [
+            "query.text()"
+          ]
+        },
+        "seedingSize": {
+          "selector": "",
+          "filters": [
+            "query.text().match(/总大小：(.*?)上一页/g)",
+            "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
+            "(query != 0) ? query.sizeToNumber() : 0"
+          ]
+        }
+      }
+    }
+  }
 }
