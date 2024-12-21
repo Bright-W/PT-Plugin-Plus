@@ -342,9 +342,9 @@ export class Searcher {
               dataType: "text",
               contentType: "text/plain",
               timeout: 30000,
-              method: ERequestMethod.GET,
+              method: ERequestMethod.GET
             })
-              .done((result: any) => {
+              .then((result: any) => {
                  if (result && typeof result == "string" && result.length > 100) {
                   let doc = new DOMParser().parseFromString(result, "text/html");
                   let IMDBselector = entry.IMDBResultSelector || "div.overlay-top a:first";
@@ -393,7 +393,7 @@ export class Searcher {
                         if (!entry.parseScript) {
                           this.service.debug("searchTorrent: getScriptContent", scriptPath);
                           APP.getScriptContent(scriptPath)
-                            .done((script: string) => {
+                            .then((script: string) => {
                               this.service.debug(
                                 "searchTorrent: getScriptContent done",
                                 scriptPath
