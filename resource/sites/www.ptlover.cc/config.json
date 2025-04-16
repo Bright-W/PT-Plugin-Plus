@@ -1,131 +1,90 @@
 {
-  "name": "ICC",
+  "name": "Afun",
   "timezoneOffset": "+0800",
   "schema": "NexusPHP",
-  "url": "https://www.icc2022.com/",
-  "description": "冰淇淋",
-  "icon": "https://www.icc2022.com/pic/logo.png",
+  "url": "https://www.ptlover.cc",
+  "description": "希望都能找到各自的兴趣、爱好、欢喜",
+  "icon": "https://www.ptlover.cc/favicon.ico",
   "tags": [
-    "影视",
-    "综合"
+    "综合",
+    "电影",
+    "电视剧",
+    "纪录片"
   ],
-  "host": "www.icc2022.com",
+  "host": "ptlover.cc",
+  "collaborator": "geni",
   "levelRequirements": [
     {
-      "level": 1,
+      "level": "1",
       "name": "Power User",
       "interval": "4",
       "downloaded": "50GB",
       "ratio": "1.05",
       "seedingPoints": "40000",
-      "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+      "privilege": "无"
     },
     {
-      "level": 2,
+      "level": "2",
       "name": "Elite User",
       "interval": "8",
       "downloaded": "120GB",
       "ratio": "1.55",
       "seedingPoints": "80000",
-      "privilege": "Elite User及以上用户封存账号后不会被删除。"
+      "privilege": "无"
     },
     {
-      "level": 3,
+      "level": "3",
       "name": "Crazy User",
       "interval": "15",
       "downloaded": "300GB",
       "ratio": "2.05",
       "seedingPoints": "150000",
-      "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
+      "privilege": "无"
     },
     {
-      "level": 4,
+      "level": "4",
       "name": "Insane User",
       "interval": "25",
       "downloaded": "500GB",
       "ratio": "2.55",
       "seedingPoints": "250000",
-      "privilege": "可以查看普通日志。"
+      "privilege": "无"
     },
     {
-      "level": 5,
+      "level": "5",
       "name": "Veteran User",
       "interval": "40",
       "downloaded": "750GB",
       "ratio": "3.05",
       "seedingPoints": "400000",
-      "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
+      "privilege": "无"
     },
     {
-      "level": 6,
+      "level": "6",
       "name": "Extreme User",
       "interval": "60",
-      "downloaded": "1TB",
+      "downloaded": "1024GB",
       "ratio": "3.55",
       "seedingPoints": "600000",
-      "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
+      "privilege": "无"
     },
     {
-      "level": 7,
+      "level": "7",
       "name": "Ultimate User",
       "interval": "80",
-      "downloaded": "1.5TB",
+      "downloaded": "1536GB",
       "ratio": "4.05",
-      "seedingPoints": "800000",
-      "privilege": "得到五个邀请名额。"
+      "seedingPoints": "1800000",
+      "privilege": "无"
     },
     {
-      "level": 8,
+      "level": "8",
       "name": "Nexus Master",
       "interval": "100",
-      "downloaded": "3TB",
+      "downloaded": "3072GB",
       "ratio": "4.55",
       "seedingPoints": "1000000",
-      "privilege": "得到十个邀请名额。"
-    }
-  ],
-  "categories": [
-    {
-      "entry": "torrents.php",
-      "result": "&cat$id$=1",
-      "category": [
-        {
-          "id": 408,
-          "name": "音轨"
-        },
-        {
-          "id": 409,
-          "name": "其它"
-        },
-        {
-          "id": 407,
-          "name": "体育"
-        },
-        {
-          "id": 406,
-          "name": "MV"
-        },
-        {
-          "id": 403,
-          "name": "综艺"
-        },
-        {
-          "id": 402,
-          "name": "电视剧"
-        },
-        {
-          "id": 405,
-          "name": "动漫"
-        },
-        {
-          "id": 404,
-          "name": "纪录片"
-        },
-        {
-          "id": 401,
-          "name": "电影"
-        }
-      ]
+      "privilege": "无"
     }
   ],
   "selectors": {
@@ -155,7 +114,7 @@
     "fieldSelector": {
       "progress": {
         "selector": [
-          "> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"
+          "> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"
         ],
         "filters": [
           "query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"
@@ -163,7 +122,7 @@
       },
       "status": {
         "selector": [
-          "> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"
+          "> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"
         ],
         "filters": [
           "query ? query.attr('title') : ''",
