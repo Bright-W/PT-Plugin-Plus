@@ -1,3 +1,19 @@
+> [!WARNING]
+> PT-Plugin-Plus 项目已经进入停止维护期（具体说明见： https://github.com/pt-plugins/PT-Plugin-Plus/issues/2235 ）
+> 
+> 我们推荐您使用全新的替代方案：  **[PT-depiler](https://github.com/pt-plugins/PT-depiler)** 。
+> PT-depiler 是 PT-Plugin-Plus 的继任者，保留了绝大多数核心功能并进行了全面优化，包括更好的兼容性、更稳定的性能和更丰富的功能支持。建议所有用户迁移至新项目以获得持续的更新和支持。
+
+> [!TIP]
+> 如果你浏览器中使用的PTPP已经被禁用，你可以尝试以下方法 **重新恢复使用** 或 **导出数据以迁移至PT-depiler**：
+> 
+> ① [使用浏览器 flags 临时启用](https://github.com/pt-plugins/PT-Plugin-Plus/wiki#%E6%88%91%E5%B7%B2%E7%BB%8F%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E4%BA%86%E5%BA%94%E8%AF%A5%E6%80%8E%E4%B9%88%E5%8A%9E) （需要 chrome < 139）
+> 
+> ② [使用临时插件 PTPP Exporter](https://github.com/pt-plugins/PT-Plugin-Plus/discussions/2241) （仅适用于通过 crx 或者 zip 方法安装）
+> 
+> ③ [使用低版本 chrome 抢救数据](https://github.com/pt-plugins/PT-Plugin-Plus/discussions/2242)  （推荐！也可用于其他基于 chromium 但未移除 MV2 支持的浏览器）
+
+
 <p align="center">
 <img src="https://github.com/pt-plugins/PT-Plugin-Plus/raw/master/public/assets/icon-128.png"><br/>
 <a href="https://github.com/pt-plugins/PT-Plugin-Plus/releases?include_prereleases/latest" title="GitHub Pre-releases"><img src="https://img.shields.io/github/release/pt-plugins/PT-Plugin-Plus.svg?include_prereleases&label=pre-release"></a>
