@@ -9,7 +9,7 @@
 3. 这里可以看到有两个页面 一个是 `index.html`, 一个是 `背景页`
 4. index.html 就是点击PTPP按钮看到的主页面，而 背景页 就是后台日志输出的地方，可进行 debug 等操作。
 
-![img](./docs/images/1.png)
+![img](./docs/images/1.png) 
 
 5. 从项目结构上来说, 打开F12即可看见日志。
    1. `src/background` 的日志将会输出到 `背景页`。
