@@ -465,7 +465,7 @@
             let id = link.getQueryString("id");
             url = `download.php?id=${id}`;
           }
-          url = url + "&https=1"
+          // url = url + "&https=1"
         }
       }
 
