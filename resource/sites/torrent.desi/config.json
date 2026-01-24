@@ -47,7 +47,7 @@
       "merge": true,
       "fields": {
         "isLogged": {
-          "selector": ["form[title='Logout']"],
+          "selector": ["form[action*='logout']"],
           "filters": ["query.length > 0"]
         }
       }
