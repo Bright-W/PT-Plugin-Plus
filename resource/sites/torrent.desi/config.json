@@ -46,6 +46,14 @@
     "userBaseInfo": {
       "merge": true,
       "fields": {
+        "name": {
+          "selector": ["a[href*='settings']:first"],
+          "attribute": "href",
+          "switchFilters": [
+            ["new URL(query).pathname.split('/')", "(query && query.length>2)?(query[1]):''"],
+            ["query ? decodeURI(query.getQueryString('id')):''"]
+          ]
+        },
         "isLogged": {
           "selector": ["form[action*='logout']"],
           "filters": ["query.length > 0"]
@@ -54,6 +62,7 @@
     },
     "userExtendInfo": {
       "merge": true,
+      "page": "/$user.name$",
       "fields": {
         "messageCount": {
           "selector": ["span.animate-ping"],
@@ -74,7 +83,7 @@
       }
     },
     "hnrExtendInfo": {
-      "page": "/users/$user.name$/torrents?unsatisfied=include&perPage=100&hitrun=exclude&immune=exclude",
+      "page": "/$user.name$/torrents?unsatisfied=include&perPage=100&hitrun=exclude&immune=exclude",
       "fields": {
         "unsatisfieds": {
           "selector": [".table-responsive tbody tr"],
