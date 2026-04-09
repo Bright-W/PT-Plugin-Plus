@@ -98,29 +98,20 @@
   ],
   "collaborator": "Audiences",
   "searchEntryConfig": {
+    "page": "/torrents.php",
+    "queryString": "search=$key$",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "table.torrents:last",
     "fieldSelector": {
-      "progress": {
-        "selector": [
-          "td:not(.rowfollow):not(.colhead):not(.embedded)"
-        ],
-        "filters": [
-          "query.text()=='-'?null:query.text()"
-        ]
-      },
-      "status": {
-        "selector": [
-          ".torrents-progress",
-          ".torrents-progress2"
-        ],
-        "switchFilters": [
-          [
-            "query.attr('style').indexOf('100%')!=-1?2:3"
-          ],
-          [
-            "255"
-          ]
-        ]
-      }
+        "progress": {
+            "selector": ["span.torrent-progress-value"],
+            "filters": ["query ? parseFloat(query.text().match(/[\\d.]+/)) : null"]
+        },
+        "status": {
+            "selector": ["span.torrent-progress-badge"],
+            "filters": ["query ? query.attr('class') : ''", "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('completed') != -1 ? 255 : 3"]
+        }
     }
   },
   "searchEntry": [
