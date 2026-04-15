@@ -65,7 +65,7 @@
       "page": "/$user.name$",
       "fields": {
         "messageCount": {
-          "selector": ["span.animate-ping"],
+          "selector": ["circle[fill='transparent']"],
           "filters": ["query.length?11:0"]
         },
         "joinTime": {
@@ -73,8 +73,8 @@
           "filters": ["query.attr('datetime')"]
         },
         "levelName": {
-          "selector": ["div.dt-user-header-stats span.badge-user"],
-          "filters": ["query.text()"]
+          "selector": ["span.profile__username a.user-tag__link"],
+          "filters": ["query.attr('title')"]
         },
         "uploads": {
           "selector": ["i.fa-upload:contains('Total Uploads') + span"],
