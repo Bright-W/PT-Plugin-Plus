@@ -134,7 +134,7 @@
           "selector": ["a.username[href*='user.php']:first"]
         },
         "messageCount": {
-          "selector": ["div.alert-bar > a[href*='inbox.php']", "div.alertbar > a[href*='inbox.php']"],
+          "selector": ["div.alertbar > a[href*='inbox']"],
           "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
         },
         "isLogged": {
